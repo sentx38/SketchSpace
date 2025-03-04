@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="981f425d-1f07-47b6-a1c3-4a49abda075a" name="Changes" comment="Initial commit from All">
-      <change afterPath="$PROJECT_DIR$/server/database/seeders/CategorySeeder.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/API/ModelController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/API/ModelController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Http/Requests/ModelRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Requests/ModelRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Models/Model.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Models/SketchModel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163651_models.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163651_models.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163717_comments.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163717_comments.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163741_favorites.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163741_favorites.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/seeders/DatabaseSeeder.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -287,24 +279,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/arsi/Desktop/ScetchSpace/server-side/routes&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\arsi\\Desktop\\ScetchSpace\\frontend\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/arsi/Desktop/ScetchSpace/server-side/routes",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "ts.external.directory.path": "C:\\Users\\arsi\\Desktop\\SketchSpace\\frontend\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\arsi\Desktop\ScetchSpace\server-side\routes" />
@@ -368,6 +360,7 @@
       <workItem from="1740917136675" duration="13336000" />
       <workItem from="1740996964730" duration="1462000" />
       <workItem from="1741070472488" duration="10709000" />
+      <workItem from="1741081757230" duration="995000" />
     </task>
     <servers />
   </component>
