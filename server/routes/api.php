@@ -15,11 +15,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/auth/logout', [AuthController::class,'logout']);
     Route::post("/update/profile", [UserController::class,'updateProfileImage']);
     Route::get('/categories', [CategoryController::class, 'index']); // Новый маршрут для категорий
-    Route::post('/models', [ModelController::class, 'store']);
-    Route::get('/models', [ModelController::class, 'index']);
+
+
 
     Route::apiResources([
-        "post" => ModelController::class
+        "models" => ModelController::class
     ]);
 });
 

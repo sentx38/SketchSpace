@@ -21,6 +21,7 @@ class ModelController extends Controller
             "author_id",
             "title",
             "description",
+            "likes_count",
             "price",
             "preview_image_url",
             "file_url",
@@ -28,8 +29,7 @@ class ModelController extends Controller
             "end_date",
             "category_id"
         )->with(['author', 'category']) // Включить отношения с автором и категорией
-        ->orderByDesc("id")
-            ->cursorPaginate(20);
+        ->orderByDesc("id")->cursorPaginate(20);
 
         return response()->json($models);
     }

@@ -73,7 +73,7 @@ export default function LoginCard() {
 					<CardHeader>
 						<CardTitle>Вход</CardTitle>
 						<CardDescription>
-							С возвращением в ScetchSpace
+							С возвращением в SketchSpace
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-2">

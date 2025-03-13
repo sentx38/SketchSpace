@@ -17,6 +17,7 @@ import AddModel from "@/components/model/AddModel";
 import {fetchCategories} from "@/dateFetch/categoryFetch";
 import {useSession} from "next-auth/react";
 import {CustomUser} from "@/app/api/auth/[...nextauth]/authOptions";
+import {Separator} from "@/components/ui/separator";
 
 export default function NavBar() {
     const [categories, setCategories] = useState<CategoriesType[]>([]);
@@ -35,34 +36,37 @@ export default function NavBar() {
     }, [user]);
 
     return(
-        <nav className="relative flex justify-between items-center h-[6vh] shadow-md shadow-accent p-4">
-            <div className="flex justify-between space-x-5 items-center">
-                <Link href="/">
-                    <Image src="/logo.svg" alt="logo_img" width={100} height={100} className="dark:invert"/>
-                </Link>
-                <NavigationMenu>
-                    <NavigationMenuList>
-                        <NavigationMenuItem>
-                            <NavigationMenuTrigger >Категории</NavigationMenuTrigger>
-                            <NavigationMenuContent className="">
-                                <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                                    {categories.map((category) => (
-                                        <ListItem key={category.id} title={category.title} href={`/categories/${category.code}`}>
-                                        </ListItem>
-                                    ))}
-                                </ul>
-                            </NavigationMenuContent>
-                        </NavigationMenuItem>
-                    </NavigationMenuList>
-                </NavigationMenu>
-            </div>
+        <div>
+            <nav className="relative flex justify-between items-center h-[5vh] p-4">
+                <div className="flex justify-between space-x-5 items-center">
+                    <Link href="/">
+                        <Image src="/logo.svg" alt="logo_img" width={100} height={100} className="dark:invert"/>
+                    </Link>
+                    <NavigationMenu>
+                        <NavigationMenuList>
+                            <NavigationMenuItem>
+                                <NavigationMenuTrigger >Категории</NavigationMenuTrigger>
+                                <NavigationMenuContent className="">
+                                    <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                                        {categories.map((category) => (
+                                            <ListItem key={category.id} title={category.title} href={`/categories/${category.code}`}>
+                                            </ListItem>
+                                        ))}
+                                    </ul>
+                                </NavigationMenuContent>
+                            </NavigationMenuItem>
+                        </NavigationMenuList>
+                    </NavigationMenu>
+                </div>
                 <SearchInput/>
-            <div className="flex justify-between space-x-5 items-center">
-                <AddModel />
-                <ProfileMenu/>
-            </div>
-        </nav>
+                <div className="flex justify-between space-x-5 items-center">
+                    <AddModel />
+                    <ProfileMenu/>
+                </div>
 
+            </nav>
+            <Separator />
+        </div>
     )
 }
 

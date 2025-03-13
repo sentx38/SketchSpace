@@ -70,7 +70,7 @@ export default function RegisterCard() {
 					<CardHeader>
 						<CardTitle>Регистрация</CardTitle>
 						<CardDescription>
-							Добро пожаловать в ScetchSpace
+							Добро пожаловать в SketchSpace
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="space-y-2">
@@ -89,7 +89,7 @@ export default function RegisterCard() {
 							<div className="mt-3 space-y-2">
 								<Label htmlFor="username">Имя пользователя</Label>
 								<Input
-									id="text"
+									id="username"
 									type="text"
 									placeholder="user2025"
 									value={authState.username}

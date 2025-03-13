@@ -32,7 +32,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
       >
-          <div className="h-screen">
+          <div className="h-screen overflow-y-scroll no-scrollbar">
               {/* Условный рендеринг NavBar */}
 
               <AuthProvider>

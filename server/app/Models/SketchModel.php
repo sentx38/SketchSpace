@@ -14,6 +14,7 @@ class SketchModel extends Model
         'author_id',
         'title',
         'description',
+        'likes_count',
         'price',
         'preview_image_url',
         'texture_url',

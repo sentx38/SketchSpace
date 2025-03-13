@@ -16,7 +16,7 @@ type APIResponseType<T> = {
     data: Array<T>;
     path: string;
     per_page: number;
-    next_cursor: string;
+    next_cursor?: string;
     next_page_url?: string;
     prev_cursor?: string;
     prev_page_url?: string;
@@ -35,25 +35,6 @@ type IModelFormState = {
     model_fbx: File | null;
 }
 
-// Тип модели, возвращаемой с бэкенда
-type IModel = {
-    id: number;
-    author_id: number;
-    title: string;
-    description: string | null;
-    price: number | null;
-    preview_image_url: string;
-    file_url: string;
-    texture_url: string | null;
-    model_fbx_url: string | null;
-    category_id: number | null;
-    end_date: string | null;
-    created_at: string;
-    updated_at: string;
-    author: UserType;
-    category: CategoriesType | null;
-}
-
 // Тип ошибок валидации
 type IValidationErrors = {
     title?: string[];
@@ -65,4 +46,25 @@ type IValidationErrors = {
     end_date?: string[];
     texture_url?: string[];
     model_fbx?: string[];
+}
+
+type ModelType = {
+    id: number;
+    author_id: number;
+    title: string;
+    description: string;
+    likes_count: number;
+    price: number;
+    preview_image_url: string;
+    file_url: string;
+    created_at: string;
+    end_date: string;
+    category_id: number;
+    // author: Author;
+    // category: CategoriesType;
+}
+
+interface Author {
+    id: number;
+    profile_image: string;
 }
