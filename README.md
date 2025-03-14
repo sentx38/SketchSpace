@@ -2,7 +2,7 @@
 
 Для запуска проекта необходимо два терминала: 
 
-/SketchSpace/frontend -> <u>bun run dev<u>
+/SketchSpace/frontend -> <u>bun run dev</u>
 
 /SketchSpace/server -> php artisan serve
 
