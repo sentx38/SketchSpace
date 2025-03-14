@@ -1,4 +1,4 @@
-# <h1 align="center"><a href="#" target="_blank">SketchSpace</a> </h1>
+<h1 align="center"><a href="#" target="_blank">SketchSpace</a> </h1>
 
 Для запуска проекта необходимо два терминала: 
 
