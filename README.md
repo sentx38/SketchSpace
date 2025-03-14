@@ -1,5 +1,5 @@
-# SketchSpace
-<h1 align="center">Hi there, I'm <a href="https://daniilshat.ru/" target="_blank">Daniil</a> 
+# SketchSpace <h1 align="center"><a href="https://daniilshat.ru/" target="_blank">SketchSpace</a> </h1>
+
 Для запуска проекта необходимо два терминала: 
 
 /SketchSpace/frontend:  bun run dev
