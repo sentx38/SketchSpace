@@ -5,6 +5,9 @@
 /SketchSpace/frontend:  bun run dev
 
 /SketchSpace/server:  php artisan serve
+/SketchSpace/server:  php artisan reverb:start
+/SketchSpace/server:  php artisan queue:listen
+
 
 Для входа в систему необходимо зарегестрироваться
 
