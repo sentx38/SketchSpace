@@ -6,6 +6,20 @@
       <sourceFolder url="file://$MODULE_DIR$/server/database/factories" isTestSource="false" packagePrefix="Database\Factories\" />
       <sourceFolder url="file://$MODULE_DIR$/server/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
       <sourceFolder url="file://$MODULE_DIR$/server/tests" isTestSource="true" packagePrefix="Tests\" />
+      <excludeFolder url="file://$MODULE_DIR$/server/vendor/clue/redis-protocol" />
+      <excludeFolder url="file://$MODULE_DIR$/server/vendor/clue/redis-react" />
+      <excludeFolder url="file://$MODULE_DIR$/server/vendor/evenement/evenement" />
+      <excludeFolder url="file://$MODULE_DIR$/server/vendor/laravel/reverb" />
+      <excludeFolder url="file://$MODULE_DIR$/server/vendor/paragonie/sodium_compat" />
+      <excludeFolder url="file://$MODULE_DIR$/server/vendor/pusher/pusher-php-server" />
+      <excludeFolder url="file://$MODULE_DIR$/server/vendor/ratchet/rfc6455" />
+      <excludeFolder url="file://$MODULE_DIR$/server/vendor/react/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/server/vendor/react/dns" />
+      <excludeFolder url="file://$MODULE_DIR$/server/vendor/react/event-loop" />
+      <excludeFolder url="file://$MODULE_DIR$/server/vendor/react/promise" />
+      <excludeFolder url="file://$MODULE_DIR$/server/vendor/react/promise-timer" />
+      <excludeFolder url="file://$MODULE_DIR$/server/vendor/react/socket" />
+      <excludeFolder url="file://$MODULE_DIR$/server/vendor/react/stream" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

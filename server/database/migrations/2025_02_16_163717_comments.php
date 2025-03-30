@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id(); // Автоинкрементный ID
-            $table->foreignId('model_id')->constrained('scetch_models')->onDelete('cascade');
+            $table->foreignId('model_id')->constrained('sketch_models')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->text('content');
             $table->timestamp('created_at')->useCurrent();

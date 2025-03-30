@@ -15,6 +15,11 @@
     <option name="highlightLevel" value="WARNING" />
     <option name="transferred" value="true" />
   </component>
+  <component name="PhpCodeSniffer">
+    <phpcs_settings>
+      <phpcs_by_interpreter asDefaultInterpreter="true" interpreter_id="2839aa0f-4cbd-432f-ba6a-73423d676a73" timeout="30000" />
+    </phpcs_settings>
+  </component>
   <component name="PhpIncludePathManager">
     <include_path>
       <path value="$PROJECT_DIR$/server-side/vendor/hamcrest/hamcrest-php" />
@@ -254,11 +259,40 @@
       <path value="$PROJECT_DIR$/server/vendor/phpstan/phpdoc-parser" />
       <path value="$PROJECT_DIR$/server/vendor/fidry/cpu-core-counter" />
       <path value="$PROJECT_DIR$/server/vendor/laravel/sanctum" />
+      <path value="$PROJECT_DIR$/server/vendor/clue/redis-protocol" />
+      <path value="$PROJECT_DIR$/server/vendor/clue/redis-react" />
+      <path value="$PROJECT_DIR$/server/vendor/ratchet/rfc6455" />
+      <path value="$PROJECT_DIR$/server/vendor/paragonie/sodium_compat" />
+      <path value="$PROJECT_DIR$/server/vendor/pusher/pusher-php-server" />
+      <path value="$PROJECT_DIR$/server/vendor/react/event-loop" />
+      <path value="$PROJECT_DIR$/server/vendor/react/promise" />
+      <path value="$PROJECT_DIR$/server/vendor/react/cache" />
+      <path value="$PROJECT_DIR$/server/vendor/react/dns" />
+      <path value="$PROJECT_DIR$/server/vendor/react/stream" />
+      <path value="$PROJECT_DIR$/server/vendor/react/promise-timer" />
+      <path value="$PROJECT_DIR$/server/vendor/react/socket" />
+      <path value="$PROJECT_DIR$/server/vendor/evenement/evenement" />
+      <path value="$PROJECT_DIR$/server/vendor/laravel/reverb" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
+  <component name="PhpStan">
+    <PhpStan_settings>
+      <phpstan_by_interpreter asDefaultInterpreter="true" interpreter_id="2839aa0f-4cbd-432f-ba6a-73423d676a73" timeout="60000" />
+    </PhpStan_settings>
+  </component>
   <component name="PhpStanOptionsConfiguration">
     <option name="transferred" value="true" />
+  </component>
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings configuration_file_path="$PROJECT_DIR$/server/phpunit.xml" custom_loader_path="$PROJECT_DIR$/server/vendor/autoload.php" paratest_path="$PROJECT_DIR$/server/vendor/bin/paratest_for_phpstorm" use_configuration_file="true" />
+    </phpunit_settings>
+  </component>
+  <component name="Psalm">
+    <Psalm_settings>
+      <psalm_fixer_by_interpreter asDefaultInterpreter="true" interpreter_id="2839aa0f-4cbd-432f-ba6a-73423d676a73" timeout="60000" />
+    </Psalm_settings>
   </component>
   <component name="PsalmOptionsConfiguration">
     <option name="transferred" value="true" />

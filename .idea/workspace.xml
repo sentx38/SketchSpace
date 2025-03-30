@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AnalysisUIOptions">
-    <option name="SCOPE_TYPE" value="3" />
-  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="981f425d-1f07-47b6-a1c3-4a49abda075a" name="Changes" comment="Initial commit from All">
+    <list default="true" id="981f425d-1f07-47b6-a1c3-4a49abda075a" name="Changes" comment="30/03/2025 - Добавлены функции добавления моделей в режиме реального времени а также функция копирования (будет редактироваться).&#10;Для Запуска&#10;1. bun run dev&#10;2. php artisan serve&#10;3. php artisan queue:listen&#10;4. php artisan reverb:start">
+      <change afterPath="$PROJECT_DIR$/.idea/phpunit.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/app/Events/ModelBroadCastEvent.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/app/Events/TestEvent.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/broadcasting.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/config/reverb.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/database/migrations/2025_03_23_162846_create_jobs_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/resources/js/echo.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/routes/channels.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ScetchSpace.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ScetchSpace.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/API/ModelController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/API/ModelController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Models/Category.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Models/Category.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/app/Models/SketchModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Models/SketchModel.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/bootstrap/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/bootstrap/app.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/server/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/config/database.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/database.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163717_comments.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163717_comments.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163741_favorites.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163741_favorites.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/resources/js/bootstrap.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/resources/js/bootstrap.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,14 +42,26 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;sentx38&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:sentx38/SketchSpace.git&quot;,
+    &quot;accountId&quot;: &quot;d35dc442-1feb-4ec4-91db-1e7144a32df0&quot;
+  }
+}</component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="D:\php\php.exe">
     <include_path>
       <path value="$PROJECT_DIR$/server-side/vendor/hamcrest/hamcrest-php" />
@@ -272,6 +301,20 @@
       <path value="$PROJECT_DIR$/server/vendor/phpstan/phpdoc-parser" />
       <path value="$PROJECT_DIR$/server/vendor/fidry/cpu-core-counter" />
       <path value="$PROJECT_DIR$/server/vendor/laravel/sanctum" />
+      <path value="$PROJECT_DIR$/server/vendor/clue/redis-protocol" />
+      <path value="$PROJECT_DIR$/server/vendor/clue/redis-react" />
+      <path value="$PROJECT_DIR$/server/vendor/ratchet/rfc6455" />
+      <path value="$PROJECT_DIR$/server/vendor/paragonie/sodium_compat" />
+      <path value="$PROJECT_DIR$/server/vendor/pusher/pusher-php-server" />
+      <path value="$PROJECT_DIR$/server/vendor/react/event-loop" />
+      <path value="$PROJECT_DIR$/server/vendor/react/promise" />
+      <path value="$PROJECT_DIR$/server/vendor/react/cache" />
+      <path value="$PROJECT_DIR$/server/vendor/react/dns" />
+      <path value="$PROJECT_DIR$/server/vendor/react/stream" />
+      <path value="$PROJECT_DIR$/server/vendor/react/promise-timer" />
+      <path value="$PROJECT_DIR$/server/vendor/react/socket" />
+      <path value="$PROJECT_DIR$/server/vendor/evenement/evenement" />
+      <path value="$PROJECT_DIR$/server/vendor/laravel/reverb" />
     </include_path>
   </component>
   <component name="ProjectColorInfo">{
@@ -285,29 +328,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/arsi/Desktop/ScetchSpace/server-side/routes&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\arsi\\Desktop\\SketchSpace\\frontend\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/arsi/Desktop/SketchSpace/frontend/src/app/(root)/models/[title]",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "ts.external.directory.path": "C:\\Users\\arsi\\Desktop\\SketchSpace\\frontend\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\arsi\Desktop\SketchSpace\frontend\src\app\(root)\models\[title]" />
+      <recent name="C:\Users\arsi\Desktop\SketchSpace\frontend\src\app" />
       <recent name="C:\Users\arsi\Desktop\ScetchSpace\server-side\routes" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\arsi\Desktop\SketchSpace\frontend\public" />
       <recent name="C:\Users\arsi\Desktop\SketchSpace\frontend\src\app\(root)" />
       <recent name="C:\Users\arsi\Desktop\SketchSpace\frontend\src\app" />
       <recent name="C:\Users\arsi\Desktop\SketchSpace\frontend\src\app\category" />
@@ -316,7 +362,7 @@
   </component>
   <component name="RunManager" selected="PHPUnit.Main">
     <configuration name="Main" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
-      <TestRunner configuration_file="$PROJECT_DIR$/server-side/phpunit.xml" scope="XML" use_alternative_configuration_file="true" />
+      <TestRunner configuration_file="$PROJECT_DIR$/server/phpunit.xml" scope="XML" use_alternative_configuration_file="true" />
       <method v="2" />
     </configuration>
     <configuration name="Main" type="PestRunConfigurationType">
@@ -377,6 +423,19 @@
       <workItem from="1741586562919" duration="582000" />
       <workItem from="1741591291916" duration="201000" />
       <workItem from="1741894101486" duration="4528000" />
+      <workItem from="1741898696044" duration="778000" />
+      <workItem from="1741938371290" duration="2714000" />
+      <workItem from="1741945220091" duration="11000" />
+      <workItem from="1742034766723" duration="10598000" />
+      <workItem from="1742045521611" duration="21507000" />
+      <workItem from="1742205727161" duration="475000" />
+      <workItem from="1742214342239" duration="168000" />
+      <workItem from="1742635364110" duration="6611000" />
+      <workItem from="1742731948683" duration="7376000" />
+      <workItem from="1742739524620" duration="9278000" />
+      <workItem from="1742821598457" duration="1078000" />
+      <workItem from="1742893219779" duration="145000" />
+      <workItem from="1743332844088" duration="9024000" />
     </task>
     <servers />
   </component>
@@ -387,6 +446,7 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Initial commit from Create Next App" />
     <MESSAGE value="Initial commit from All" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial commit from All" />
+    <MESSAGE value="30/03/2025 - Добавлены функции добавления моделей в режиме реального времени а также функция копирования (будет редактироваться).&#10;Для Запуска&#10;1. bun run dev&#10;2. php artisan serve&#10;3. php artisan queue:listen&#10;4. php artisan reverb:start" />
+    <option name="LAST_COMMIT_MESSAGE" value="30/03/2025 - Добавлены функции добавления моделей в режиме реального времени а также функция копирования (будет редактироваться).&#10;Для Запуска&#10;1. bun run dev&#10;2. php artisan serve&#10;3. php artisan queue:listen&#10;4. php artisan reverb:start" />
   </component>
 </project>

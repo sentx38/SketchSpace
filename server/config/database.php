@@ -95,6 +95,10 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => 'prefer',
+            'options' => array(
+                PDO::ATTR_EMULATE_PREPARES => true
+            ),
+            'binary_parameters' => 'yes', // not sure if this one is necessary
         ],
 
         'sqlsrv' => [

@@ -34,7 +34,7 @@ class SketchModel extends Model
      */
     public function author(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'author_id', 'id')->select('id', 'profile_image');
+        return $this->belongsTo(User::class, 'author_id', 'id')->select('id', 'name', 'username', 'email', 'profile_image');
     }
 
     /**
@@ -43,6 +43,6 @@ class SketchModel extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id')->select('id', 'title');
+        return $this->belongsTo(Category::class, 'category_id', 'id')->select('id', 'title', 'code');
     }
 }

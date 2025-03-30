@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\ModelBroadCastEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ModelRequest;
 use App\Models\SketchModel;
@@ -62,7 +63,8 @@ class ModelController extends Controller
             $payload = array_merge($payload, $fileUrls);
 
             // Создаем модель с уже готовыми путями
-            $model = SketchModel::create($payload);
+            $model = SketchModel::create($payload)->with("author")->orderByDesc("id")->first();
+            ModelBroadCastEvent::dispatch($model);
 
             // Обновляем путь к папке с учетом реального ID модели
             $finalFolderPath = "user_{$user->id}/models/model_{$model->id}";
@@ -90,22 +92,22 @@ class ModelController extends Controller
         // Архив модели
         $fileName = 'archive.' . $request->file('file')->getClientOriginalExtension();
         $filePath = $request->file('file')->storeAs($folderPath, $fileName, 'public');
-        $fileUrls['file_url'] = Storage::disk('public')->url($filePath);
+        $fileUrls['file_url'] = "$folderPath/$fileName"; // Сохраняем относительный путь
 
         // Превью изображения
         $previewName = 'preview.' . $request->file('preview_image_url')->getClientOriginalExtension();
         $previewPath = $request->file('preview_image_url')->storeAs($folderPath, $previewName, 'public');
-        $fileUrls['preview_image_url'] = Storage::disk('public')->url($previewPath);
+        $fileUrls['preview_image_url'] = "$folderPath/$previewName"; // Сохраняем относительный путь
 
         // Текстура
         $textureName = 'texture.' . $request->file('texture_url')->getClientOriginalExtension();
         $texturePath = $request->file('texture_url')->storeAs($folderPath, $textureName, 'public');
-        $fileUrls['texture_url'] = Storage::disk('public')->url($texturePath);
+        $fileUrls['texture_url'] = "$folderPath/$textureName"; // Сохраняем относительный путь
 
         // FBX модель
         $fbxName = 'model.fbx';
         $fbxPath = $request->file('model_fbx')->storeAs($folderPath, $fbxName, 'public');
-        $fileUrls['model_fbx_url'] = Storage::disk('public')->url($fbxPath);
+        $fileUrls['model_fbx_url'] = "$folderPath/$fbxName"; // Сохраняем относительный путь
 
         return $fileUrls;
     }
@@ -115,12 +117,13 @@ class ModelController extends Controller
     {
         // Переименовываем папку
         Storage::disk('public')->move($oldFolderPath, $newFolderPath);
+
         // Обновляем пути в модели
         $fileUrls = [
-            'file_url' => Storage::disk('public')->url("$newFolderPath/archive." . pathinfo($model->file_url, PATHINFO_EXTENSION)),
-            'preview_image_url' => Storage::disk('public')->url("$newFolderPath/preview." . pathinfo($model->preview_image_url, PATHINFO_EXTENSION)),
-            'texture_url' => Storage::disk('public')->url("$newFolderPath/texture." . pathinfo($model->texture_url, PATHINFO_EXTENSION)),
-            'model_fbx_url' => Storage::disk('public')->url("$newFolderPath/model.fbx"),
+            'file_url' => "$newFolderPath/archive." . pathinfo($model->file_url, PATHINFO_EXTENSION),
+            'preview_image_url' => "$newFolderPath/preview." . pathinfo($model->preview_image_url, PATHINFO_EXTENSION),
+            'texture_url' => "$newFolderPath/texture." . pathinfo($model->texture_url, PATHINFO_EXTENSION),
+            'model_fbx_url' => "$newFolderPath/model.fbx",
         ];
 
         $model->update($fileUrls);

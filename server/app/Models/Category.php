@@ -25,6 +25,6 @@ class Category extends Model
      */
     public function models(): HasMany
     {
-        return $this->hasMany(Model::class, 'category_id');
+        return $this->hasMany(SketchModel::class, 'category_id');
     }
 }
