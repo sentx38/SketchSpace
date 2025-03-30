@@ -7,6 +7,6 @@ export const CHECK_CREDENTIALS = "/auth/checkCredentials";
 export const LOGOUT_URL = "/auth/logout";
 export const UPDATE_PROFILE_URL = "/update/profile";
 
-export const MODEL_URL = "/models"
+export const MODEL_URL = "/model"
 
 export const GET_CATEGORIES = "/categories";

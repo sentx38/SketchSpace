@@ -1,6 +1,6 @@
 import { LOGIN_URL } from "@/lib/apiEndPoints";
 import myAxios from "@/lib/axios.config";
-import { AuthOptions, ISODateString, User } from "next-auth";
+import { AuthOptions, ISODateString } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 

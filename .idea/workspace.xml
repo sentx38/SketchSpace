@@ -5,30 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="981f425d-1f07-47b6-a1c3-4a49abda075a" name="Changes" comment="30/03/2025 - Добавлены функции добавления моделей в режиме реального времени а также функция копирования (будет редактироваться).&#10;Для Запуска&#10;1. bun run dev&#10;2. php artisan serve&#10;3. php artisan queue:listen&#10;4. php artisan reverb:start">
-      <change afterPath="$PROJECT_DIR$/.idea/phpunit.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/app/Events/ModelBroadCastEvent.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/app/Events/TestEvent.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/config/broadcasting.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/config/reverb.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/database/migrations/2025_03_23_162846_create_jobs_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/resources/js/echo.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/routes/channels.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ScetchSpace.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ScetchSpace.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/API/ModelController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/API/ModelController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Models/Category.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Models/Category.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Models/SketchModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Models/SketchModel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/bootstrap/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/bootstrap/app.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/server/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/config/database.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/database.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163717_comments.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163717_comments.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163741_favorites.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163741_favorites.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/resources/js/bootstrap.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/resources/js/bootstrap.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -435,12 +412,32 @@
       <workItem from="1742739524620" duration="9278000" />
       <workItem from="1742821598457" duration="1078000" />
       <workItem from="1742893219779" duration="145000" />
-      <workItem from="1743332844088" duration="9024000" />
+      <workItem from="1743332844088" duration="9469000" />
     </task>
+    <task id="LOCAL-00001" summary="30/03/2025 - Добавлены функции добавления моделей в режиме реального времени а также функция копирования (будет редактироваться).&#10;Для Запуска&#10;1. bun run dev&#10;2. php artisan serve&#10;3. php artisan queue:listen&#10;4. php artisan reverb:start">
+      <option name="closed" value="true" />
+      <created>1743343602447</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743343602447</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />

@@ -94,7 +94,7 @@ export default function ProfileMenu(){
         })
     }
     return (
-        <div>
+        <>
             {/* Logout Dialog */}
             <Dialog open={logoutOpen} onOpenChange={setLogoutOpen}>
                 <DialogContent>
@@ -169,6 +169,6 @@ export default function ProfileMenu(){
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-        </div>
+        </>
     )
 }

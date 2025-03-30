@@ -1,8 +1,4 @@
-type CategoriesType =  {
-    id: number
-    title: string
-    code: string
-}
+
 
 type UserType = {
     id?: number
@@ -13,7 +9,7 @@ type UserType = {
 }
 
 type APIResponseType<T> = {
-    data: Array<T>;
+    data: Array<T> | [];
     path: string;
     per_page: number;
     next_cursor?: string;
@@ -33,6 +29,14 @@ type IModelFormState = {
     end_date: Date | null;
     texture_url: File | null;
     model_fbx: File | null;
+}
+
+type ModelStateType = {
+    title: string;
+    description: string;
+    preview_image_url: File | null;
+    price: number;
+    category_id: number;
 }
 
 // Тип ошибок валидации
@@ -60,11 +64,19 @@ type ModelType = {
     created_at: string;
     end_date: string;
     category_id: number;
-    // author: Author;
-    // category: CategoriesType;
+    author: AuthorType;
+    category?: CategoriesType;
 }
 
-interface Author {
+interface AuthorType {
     id: number;
+    name: string;
+    username: string;
+    email: string;
     profile_image: string;
+}
+type CategoriesType =  {
+    id: number
+    title: string
+    code: string
 }
