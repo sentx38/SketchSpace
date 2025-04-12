@@ -13,8 +13,8 @@ import { Label } from "@/components/ui/label"
 import { TabsContent } from "@/components/ui/tabs"
 import myAxios from "@/lib/axios.config";
 import {REGISTER_URL} from "@/lib/apiEndPoints";
-import {useToast} from "@/hooks/use-toast";
 import {signIn} from "next-auth/react";
+import {toast} from "sonner";
 
 export default function RegisterCard() {
 	const [authState, setAuthState] = useState({
@@ -32,17 +32,14 @@ export default function RegisterCard() {
 		password:[],
 		username:[],
 	});
-	const { toast } = useToast();
 
 	const handleSubmit = (event:React.FormEvent) => {
 		event.preventDefault();
 		setLoading(true)
 		myAxios.post(REGISTER_URL, authState)
-			.then((res) => {
+			.then(() => {
 				setLoading(false)
-				toast({
-					variant: "success",
-					description:"Учетная запись успешно создана"})
+				toast.success("Учетная запись успешно создана")
 				signIn("credentials", {
 					email: authState.email,
 					password: authState.password,
@@ -56,9 +53,7 @@ export default function RegisterCard() {
 					setErrors(err.response?.data.errors)
 					console.log(err.response?.data.errors)
 				} else {
-					toast({
-						variant: "destructive",
-						description:"Что-то пошло не так. Пожалуйста попробуйте заново позже!"})
+					toast.error("Что-то пошло не так. Пожалуйста попробуйте заново позже!")
 				}
 			})
 	}

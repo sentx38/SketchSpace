@@ -6,7 +6,14 @@ type UserType = {
     profile_image?: string
     username?: string
     email?: string
+    role?: string
+    created_at: string;
 }
+
+type RoleType = {
+    id: number;
+    title: string;
+};
 
 type APIResponseType<T> = {
     data: Array<T> | [];
@@ -24,18 +31,15 @@ type IModelFormState = {
     description: string;
     file: File | null;
     preview_image_url: File | null;
-    price: number;
     category_id: number;
-    end_date: Date | null;
-    texture_url: File | null;
-    model_fbx: File | null;
+    envMap_url: File | null;
+    model_glb: File | null;
 }
 
 type ModelStateType = {
     title: string;
     description: string;
     preview_image_url: File | null;
-    price: number;
     category_id: number;
 }
 
@@ -45,11 +49,9 @@ type IValidationErrors = {
     description?: string[];
     file?: string[];
     preview_image_url?: string[];
-    price?: string[];
     category_id?: string[];
-    end_date?: string[];
-    texture_url?: string[];
-    model_fbx?: string[];
+    envMap_url?: string[];
+    model_glb?: string[];
 }
 
 type ModelType = {
@@ -57,15 +59,24 @@ type ModelType = {
     author_id: number;
     title: string;
     description: string;
-    likes_count: number;
-    price: number;
+    favorite_count: number;
+    model_glb_url: string;
+    envMap_url: string;
     preview_image_url: string;
     file_url: string;
     created_at: string;
-    end_date: string;
     category_id: number;
     author: AuthorType;
     category?: CategoriesType;
+}
+
+type CommentType = {
+    id: number;
+    user_id: number;
+    model_id: number;
+    comment: string;
+    created_at: string;
+    user:UserType
 }
 
 interface AuthorType {
@@ -80,3 +91,6 @@ type CategoriesType =  {
     title: string
     code: string
 }
+type CategoryResponseType = {
+    data: CategoriesType;
+};

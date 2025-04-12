@@ -7,14 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ModelRequest;
 use App\Models\SketchModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ModelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $models = SketchModel::select(
@@ -22,134 +20,284 @@ class ModelController extends Controller
             "author_id",
             "title",
             "description",
-            "likes_count",
-            "price",
+            "favorite_count",
             "preview_image_url",
             "file_url",
+            "model_glb_url",
             "created_at",
-            "end_date",
             "category_id"
-        )->with(['author', 'category']) // Включить отношения с автором и категорией
-        ->orderByDesc("id")->cursorPaginate(20);
+        )
+            ->with(['author', 'category'])
+            ->orderByDesc("id","asc")
+            ->cursorPaginate(20);
 
         return response()->json($models);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(ModelRequest $request)
+    public function popular(Request $request)
     {
-        $payload = $request->validated();
         try {
-            $user = $request->user();
-            $payload["author_id"] = $user->id;
+            $models = SketchModel::select(
+                "id",
+                "author_id",
+                "title",
+                "description",
+                "favorite_count",
+                "preview_image_url",
+                "file_url",
+                "model_glb_url",
+                "created_at",
+                "category_id"
+            )
+                ->with(['author', 'category'])
+                ->orderByDesc("favorite_count")
+                ->get();
 
-            // Логируем загруженные файлы
-//            Log::debug("Uploaded files:", $request->allFiles());
-//            Log::debug("Model FBX file details:", [
-//                'name' => $request->file('model_fbx')->getClientOriginalName(),
-//                'extension' => $request->file('model_fbx')->getClientOriginalExtension(),
-//                'mime_type' => $request->file('model_fbx')->getClientMimeType(),
-//            ]);
-
-            // Формируем путь к папке
-            $folderPath = "user_{$user->id}/models/model_".time(); // Временный путь, так как ID еще нет
-
-            // Подготавливаем пути к файлам
-            $fileUrls = $this->handleFileUpload($request, $folderPath);
-
-            // Добавляем пути к файлам в payload
-            $payload = array_merge($payload, $fileUrls);
-
-            // Создаем модель с уже готовыми путями
-            $model = SketchModel::create($payload)->with("author")->orderByDesc("id")->first();
-            ModelBroadCastEvent::dispatch($model);
-
-            // Обновляем путь к папке с учетом реального ID модели
-            $finalFolderPath = "user_{$user->id}/models/model_{$model->id}";
-            $this->renameUploadedFiles($folderPath, $finalFolderPath, $model);
-
-            // Загружаем связанные данные
-            $model->load(['author', 'category']);
-
+            return response()->json($models);
+        } catch (\Exception $e) {
+            Log::error("model-popular-error => " . $e->getMessage());
             return response()->json([
-                "message" => "Модель успешно создана!",
-                "model" => $model
-            ], 201);
+                "message" => "Не удалось загрузить популярные модели."
+            ], 500);
+        }
+    }
+
+    public function byCategory(Request $request, string $categoryCode)
+    {
+        try {
+            $query = SketchModel::select(
+                "id",
+                "author_id",
+                "title",
+                "description",
+                "favorite_count",
+                "preview_image_url",
+                "file_url",
+                "model_glb_url",
+                "created_at",
+                "category_id"
+            )->with(['author', 'category'])
+                ->orderByDesc("id");
+
+            if ($categoryCode !== 'all') {
+                $query->whereHas('category', function ($q) use ($categoryCode) {
+                    $q->where('code', $categoryCode);
+                });
+            }
+
+            return response()->json($query->cursorPaginate(20));
+        } catch (\Exception $e) {
+            Log::error("model-category-error => " . $e->getMessage());
+            return response()->json(["message" => "Ошибка при загрузке моделей по категории."], 500);
+        }
+    }
+
+    public function search(Request $request)
+    {
+        try {
+            $query = $request->input('query', '');
+
+            if (empty($query)) {
+                return response()->json([
+                    "message" => "Пожалуйста, укажите поисковый запрос."
+                ], 400);
+            }
+
+            $models = SketchModel::select(
+                "id",
+                "author_id",
+                "title",
+                "description",
+                "favorite_count",
+                "preview_image_url",
+                "file_url",
+                "model_glb_url",
+                "created_at",
+                "category_id"
+            )
+                ->with(['author', 'category'])
+                ->where('title', 'LIKE', "%{$query}%")
+                ->orWhere('description', 'LIKE', "%{$query}%")
+                ->orderByDesc("id")
+                ->cursorPaginate(20);
+
+            return response()->json($models);
         } catch (\Exception $err) {
-            Log::error("model-error => " . $err->getMessage());
+            Log::error("model-search-error => " . $err->getMessage());
             return response()->json([
                 "message" => "Что-то пошло не так. Пожалуйста, попробуйте еще раз!"
             ], 500);
         }
     }
 
+    public function store(ModelRequest $request)
+    {
+        Log::info('Request data:', $request->all());
+        $payload = $request->validated();
+        return DB::transaction(function () use ($request, $payload) {
+            try {
+                $user = $request->user();
+                $payload["author_id"] = $user->id;
+
+                // Находим минимальный свободный id
+                $existingIds = SketchModel::pluck('id')->toArray();
+                sort($existingIds);
+                $newId = 1;
+                foreach ($existingIds as $id) {
+                    if ($id == $newId) {
+                        $newId++;
+                    } else {
+                        break;
+                    }
+                }
+
+                $folderPath = "user_{$user->id}/models/model_".time();
+                $fileUrls = $this->handleFileUpload($request, $folderPath);
+                $payload = array_merge($payload, $fileUrls);
+
+                // Создаем модель с новым id
+                $model = new SketchModel($payload);
+                $model->id = $newId;
+                $model->save();
+
+                $finalFolderPath = "user_{$user->id}/models/model_{$model->id}";
+                $this->renameUploadedFiles($folderPath, $finalFolderPath, $model);
+
+                $model->load(['author', 'category']);
+                Log::debug("Model with relations after creation:", $model->toArray());
+
+                ModelBroadCastEvent::dispatch($model);
+
+                return response()->json([
+                    "message" => "Модель успешно создана!",
+                    "model" => $model
+                ], 201);
+            } catch (\Exception $err) {
+                Log::error("model-error => " . $err->getMessage());
+                return response()->json([
+                    "message" => "Что-то пошло не так. Пожалуйста, попробуйте еще раз!",
+                    "error" => $err->getMessage()
+                ], 500);
+            }
+        });
+    }
+
     private function handleFileUpload(Request $request, string $folderPath): array
     {
         $fileUrls = [];
+        $baseUrl = config('app.url'); // Базовый URL из .env (например, http://127.0.0.1:8000)
 
-        // Архив модели
-        $fileName = 'archive.' . $request->file('file')->getClientOriginalExtension();
-        $filePath = $request->file('file')->storeAs($folderPath, $fileName, 'public');
-        $fileUrls['file_url'] = "$folderPath/$fileName"; // Сохраняем относительный путь
+        // Загружаем основной файл (оставляем /storage)
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
+            $fileName = 'archive.' . $request->file('file')->getClientOriginalExtension();
+            $filePath = $request->file('file')->storeAs($folderPath, $fileName, 'public');
+            $fileUrls['file_url'] = Storage::url($filePath); // Используем /storage
+        }
 
-        // Превью изображения
-        $previewName = 'preview.' . $request->file('preview_image_url')->getClientOriginalExtension();
-        $previewPath = $request->file('preview_image_url')->storeAs($folderPath, $previewName, 'public');
-        $fileUrls['preview_image_url'] = "$folderPath/$previewName"; // Сохраняем относительный путь
+        // Загружаем превью (оставляем /storage)
+        if ($request->hasFile('preview_image_url') && $request->file('preview_image_url')->isValid()) {
+            $previewName = 'preview.' . $request->file('preview_image_url')->getClientOriginalExtension();
+            $previewPath = $request->file('preview_image_url')->storeAs($folderPath, $previewName, 'public');
+            $fileUrls['preview_image_url'] = Storage::url($previewPath); // Используем /storage
+        }
 
-        // Текстура
-        $textureName = 'texture.' . $request->file('texture_url')->getClientOriginalExtension();
-        $texturePath = $request->file('texture_url')->storeAs($folderPath, $textureName, 'public');
-        $fileUrls['texture_url'] = "$folderPath/$textureName"; // Сохраняем относительный путь
+        // Загружаем envMap (используем /get)
+        if ($request->hasFile('envMap_url') && $request->file('envMap_url')->isValid()) {
+            $envMapName = 'envMap.' . $request->file('envMap_url')->getClientOriginalExtension();
+            $envMapPath = $request->file('envMap_url')->storeAs($folderPath, $envMapName, 'public');
+            $fileUrls['envMap_url'] = "$baseUrl/get/$envMapPath"; // Кастомный путь /get
+        }
 
-        // FBX модель
-        $fbxName = 'model.fbx';
-        $fbxPath = $request->file('model_fbx')->storeAs($folderPath, $fbxName, 'public');
-        $fileUrls['model_fbx_url'] = "$folderPath/$fbxName"; // Сохраняем относительный путь
+        // Загружаем модель (используем /get)
+        if ($request->hasFile('model_glb') && $request->file('model_glb')->isValid()) {
+            $modelExtension = $request->file('model_glb')->getClientOriginalExtension();
+            $modelName = "model.{$modelExtension}";
+            $modelPath = $request->file('model_glb')->storeAs($folderPath, $modelName, 'public');
+            $fileUrls['model_glb_url'] = "$baseUrl/get/$modelPath"; // Кастомный путь /get
+        }
 
+        Log::debug("Uploaded file URLs:", $fileUrls);
         return $fileUrls;
     }
 
-
     private function renameUploadedFiles(string $oldFolderPath, string $newFolderPath, SketchModel $model)
     {
-        // Переименовываем папку
         Storage::disk('public')->move($oldFolderPath, $newFolderPath);
+        $baseUrl = config('app.url'); // Базовый URL из .env
 
-        // Обновляем пути в модели
         $fileUrls = [
-            'file_url' => "$newFolderPath/archive." . pathinfo($model->file_url, PATHINFO_EXTENSION),
-            'preview_image_url' => "$newFolderPath/preview." . pathinfo($model->preview_image_url, PATHINFO_EXTENSION),
-            'texture_url' => "$newFolderPath/texture." . pathinfo($model->texture_url, PATHINFO_EXTENSION),
-            'model_fbx_url' => "$newFolderPath/model.fbx",
+            'file_url' => Storage::url("$newFolderPath/archive." . pathinfo($model->file_url, PATHINFO_EXTENSION)),
+            'preview_image_url' => Storage::url("$newFolderPath/preview." . pathinfo($model->preview_image_url, PATHINFO_EXTENSION)),
+            'envMap_url' => "$baseUrl/get/$newFolderPath/envMap." . pathinfo($model->envMap_url, PATHINFO_EXTENSION),
+            'model_glb_url' => "$baseUrl/get/$newFolderPath/model." . pathinfo($model->model_glb_url, PATHINFO_EXTENSION),
         ];
 
+        Log::debug("Renamed file URLs:", $fileUrls);
         $model->update($fileUrls);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        //
+        try {
+            $model = SketchModel::select(
+                "id",
+                "author_id",
+                "title",
+                "description",
+                "favorite_count",
+                "preview_image_url",
+                "file_url",
+                "model_glb_url",
+                "envMap_url",
+                "created_at",
+                "category_id"
+            )
+                ->with(['author', 'category'])
+                ->findOrFail($id);
+
+            return response()->json($model);
+        } catch (\Exception $err) {
+            Log::error("model-show-error => " . $err->getMessage());
+            return response()->json([
+                "message" => "Модель не найдена."
+            ], 404);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Request $request, string $id)
     {
-        //
-    }
+        try {
+            $user = $request->user();
+            $model = SketchModel::findOrFail($id);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+            // Проверяем, является ли пользователь админом или автором модели
+            if ($user->role !== 'admin' && $model->author_id !== $user->id) {
+                return response()->json([
+                    "message" => "У вас нет прав для удаления этой модели."
+                ], 403);
+            }
+
+            $folderPath = "user_{$model->author_id}/models/model_{$model->id}";
+
+            // Удаляем папку с файлами модели
+            if (Storage::disk('public')->exists($folderPath)) {
+                Storage::disk('public')->deleteDirectory($folderPath);
+                Log::info("Deleted model folder: {$folderPath}");
+            }
+
+            // Удаляем модель из базы данных
+            $model->delete();
+
+            Log::info("Model deleted: ID={$id}, UserID={$user->id}, Role={$user->role}");
+
+            return response()->json([
+                "message" => "Модель успешно удалена."
+            ], 200);
+        } catch (\Exception $err) {
+            Log::error("model-delete-error => " . $err->getMessage());
+            return response()->json([
+                "message" => "Не удалось удалить модель."
+            ], 500);
+        }
     }
 }

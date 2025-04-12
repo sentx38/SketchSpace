@@ -3,11 +3,13 @@ import myAxios from "@/lib/axios.config";
 import { AuthOptions, ISODateString } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { getSession } from "next-auth/react";
 
 export interface CustomSession {
     user?: CustomUser;
     expires: ISODateString;
 }
+
 export interface CustomUser {
     id?: string | null;
     name?: string | null;
@@ -16,7 +18,14 @@ export interface CustomUser {
     token?: string | null;
     created_at?: string | null;
     updated_at?: string | null;
+    role?: string | null;
 }
+
+async function getSessionUser() {
+    const session = await getSession();
+    return session?.user as CustomUser;
+}
+
 export const authOptions: AuthOptions = {
     pages: {
         signIn: "/auth",
@@ -35,14 +44,18 @@ export const authOptions: AuthOptions = {
             return token;
         },
 
-        async session({session, token, user,}: {
-            session: CustomSession;
-            token: JWT;
-            user: CustomUser;
-        }) {
+        async session({ session, token }) {
             session.user = token.user as CustomUser;
             return session;
         },
+
+        async redirect({ url, baseUrl }) {
+            const user = await getSessionUser();
+            if (user?.role === 'admin') {
+                return `${baseUrl}/dashboard`;
+            }
+            return url;
+        }
     },
 
     providers: [
@@ -53,12 +66,19 @@ export const authOptions: AuthOptions = {
                 password: {},
             },
             async authorize(credentials, req) {
-                const res = await myAxios.post(LOGIN_URL, credentials);
-                const response = res.data;
-                const user = response?.user;
-                if (user) {
-                    return user;
-                } else {
+                try {
+                    const res = await myAxios.post(LOGIN_URL, credentials);
+                    const response = res.data;
+                    const user = response?.user;
+                    if (user) {
+                        return {
+                            ...user,
+                            role: user.role?.name || user.role
+                        };
+                    }
+                    return null;
+                } catch (error) {
+                    console.error("Authorize error:", error);
                     return null;
                 }
             },

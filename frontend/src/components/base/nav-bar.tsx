@@ -26,10 +26,8 @@ export default function NavBar() {
 
     useEffect(() => {
         const getCategories = async () => {
-            if (user?.token) {
-                const fetchedCategories = await fetchCategories(user.token);
+                const fetchedCategories = await fetchCategories();
                 setCategories(fetchedCategories);
-            }
         };
 
         getCategories();
@@ -48,6 +46,7 @@ export default function NavBar() {
                                 <NavigationMenuTrigger >Категории</NavigationMenuTrigger>
                                 <NavigationMenuContent className="">
                                     <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                                        <ListItem key="all" title="Все категории" href="/categories/all"></ListItem>
                                         {categories.map((category) => (
                                             <ListItem key={category.id} title={category.title} href={`/categories/${category.code}`}>
                                             </ListItem>

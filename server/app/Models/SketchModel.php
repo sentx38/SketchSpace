@@ -15,18 +15,15 @@ class SketchModel extends Model
         'title',
         'description',
         'likes_count',
-        'price',
         'preview_image_url',
-        'texture_url',
-        'model_fbx_url',
+        'envMap_url',
+        'model_glb_url',
         'file_url',
         'category_id',
-        'end_date',
     ];
 
     protected $casts = [
         'price' => 'float',
-        'end_date' => 'date',
     ];
 
     /**

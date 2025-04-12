@@ -11,10 +11,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { TabsContent } from "@/components/ui/tabs"
-import {useToast} from "@/hooks/use-toast";
 import myAxios from "@/lib/axios.config";
-import {CHECK_CREDENTIALS} from "@/lib/apiEndPoints";
+import { CHECK_CREDENTIALS } from "@/lib/apiEndPoints";
 import { signIn } from "next-auth/react"
+import { toast } from "sonner";
 
 export default function LoginCard() {
 	const [authState, setAuthState] = useState({
@@ -22,49 +22,47 @@ export default function LoginCard() {
 		password: ""
 	});
 
-	const [ loading, setLoading ] = useState(false);
-	const [ errors, setErrors ] = useState({
-		email:[],
-		password:[],
+	const [loading, setLoading] = useState(false);
+	const [errors, setErrors] = useState({
+		email: [],
+		password: [],
 	});
 
-	const { toast } = useToast();
-	const handleSubmit = (event:React.FormEvent) => {
-		event.preventDefault();
-		setLoading(true)
-		myAxios.post(CHECK_CREDENTIALS, authState)
-			.then((res) => {
-				setLoading(false)
-				const response = res.data;
-				if(response.status == 200){
-					signIn("credentials", {
-						email: authState.email,
-						password: authState.password,
-						redirect: true,
-						callbackUrl: "/",
-					});
-					toast({
-						variant: "success",
-						description:"Вы вошли в свою учетную запись"})
-				}
-			})
-			.catch((err) => {
-				setLoading(false)
-				if (err.response?.status == 422) {
-					setErrors(err.response?.data?.errors)
-				} else if(err.response?.status == 401){
-					toast({
-						variant: "destructive",
-						description:"Неверное имя пользователя или пароль. Проверьте правильность введенных данных"})
-				}
-				else {
-					toast({
-						variant: "destructive",
-						description:"Что-то пошло не так. Пожалуйста попробуйте заново позже!"})
-				}
-			})
-	}
 
+	const handleSubmit = async (event: React.FormEvent) => {
+		event.preventDefault();
+		setLoading(true);
+
+		try {
+			const checkRes = await myAxios.post(CHECK_CREDENTIALS, authState);
+			setLoading(false);
+
+			if (checkRes.data.status === 200) {
+				const signInResponse = await signIn("credentials", {
+					email: authState.email,
+					password: authState.password,
+					redirect: true,
+					callbackUrl: '/'
+				});
+
+				if (signInResponse?.error) {
+					toast.error("Ошибка при входе");
+					return;
+				}
+
+				toast.success("Вы вошли в свою учетную запись");
+			}
+		} catch (err: any) {
+			setLoading(false);
+			if (err.response?.status === 422) {
+				setErrors(err.response?.data?.errors);
+			} else if (err.response?.status === 401) {
+				toast.error("Неверное имя пользователя или пароль");
+			} else {
+				toast.error("Что-то пошло не так");
+			}
+		}
+	};
 
 	return (
 		<div>
@@ -87,8 +85,8 @@ export default function LoginCard() {
 									value={authState.email}
 									onChange={(e) => setAuthState({...authState, email: e.target.value})}
 								/>
+								<span className="text-red-400">{errors?.email?.[0]}</span>
 							</div>
-							<span className="text-red-400">{errors?.email?.[0]}</span>
 							<div className="mt-3 space-y-2">
 								<Label htmlFor="password">Пароль</Label>
 								<Input
@@ -97,13 +95,15 @@ export default function LoginCard() {
 									placeholder="Введите пароль"
 									onChange={(e) => setAuthState({...authState, password: e.target.value})}
 								/>
+								<span className="text-red-400">{errors?.password?.[0]}</span>
 							</div>
-							<span className="text-red-400">{errors?.password?.[0]}</span>
 							<div className="mt-6">
 								<Button
 									className="w-full"
 									variant="destructive"
-									disabled={loading}>
+									disabled={loading}
+									type="submit"
+								>
 									{loading ? "Обработка..." : "Войти"}
 								</Button>
 							</div>

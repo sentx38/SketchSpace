@@ -20,15 +20,13 @@ import {Button} from "@/components/ui/button";
 import myAxios from "@/lib/axios.config";
 import {LOGOUT_URL, UPDATE_PROFILE_URL} from "@/lib/apiEndPoints";
 import {CustomUser} from "@/app/api/auth/[...nextauth]/authOptions";
-import {useToast} from "@/hooks/use-toast";
 import {signOut, useSession} from "next-auth/react"
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
-import {fetchCategories} from "@/dateFetch/categoryFetch";
+import {toast} from "sonner";
 
 
 export default function ProfileMenu(){
-    const { toast } = useToast();
     const { setTheme } = useTheme();
     const [logoutOpen, setLogoutOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
@@ -50,16 +48,14 @@ export default function ProfileMenu(){
     const logoutUser = async () => {
         myAxios.post(LOGOUT_URL,{}, {headers:{
             Authorization: `Bearer ${user.token}`,
-            }}).then((res) => {
+            }}).then(() => {
                 signOut({
                     callbackUrl: "/auth",
                     redirect: true,
                 })
         })
-            .catch((err) => {
-                toast({
-                    variant: "destructive",
-                    description:"Что-то пошло не так. Пожалуйста попробуйте заново позже!"})
+            .catch(() => {
+                toast.error("Что-то пошло не так. Пожалуйста попробуйте заново позже!")
             })
     }
 
@@ -75,9 +71,7 @@ export default function ProfileMenu(){
         }).then((res) => {
             const response = res.data
             update({profile_image: response.image});
-            toast({
-                variant: "success",
-                description:"Профиль успешно обновлен!"})
+            toast.success("Профиль успешно обновлен!")
             setLoading(false);
             setProfileOpen(false)
         })
@@ -87,9 +81,7 @@ export default function ProfileMenu(){
                 setErrors(err.response?.data.errors)
                 console.log(err.response?.data.errors)
             } else {
-                toast({
-                    variant: "destructive",
-                    description:"Что-то пошло не так. Пожалуйста попробуйте заново позже!"})
+                toast.error("Что-то пошло не так. Пожалуйста попробуйте заново позже!")
             }
         })
     }
@@ -128,6 +120,7 @@ export default function ProfileMenu(){
                                 accept="image/png,image/svg,image/jpg,image/jpeg,image/gif,image/webp"
                                 onChange={handleImageChange}
                             />
+                            <span className="text-red-400">{errors.profile_image?.[0]}</span>
                         </div>
 
                     </form>

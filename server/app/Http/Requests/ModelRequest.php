@@ -2,36 +2,28 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\HdrFile;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\File;
+use Illuminate\Support\Facades\Log;
 
 class ModelRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules()
     {
+        Log::info('Validation data:', $this->all());
         return [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'price' => 'required|numeric|min:0.00',
             'category_id' => 'required|exists:categories,id',
-            'end_date' => 'required|date|after:today',
             'file' => 'required|file|mimes:zip,rar|max:10240',
             'preview_image_url' => 'required|file|mimes:png,jpg,jpeg|max:2048',
-            'texture_url' => 'required|file|mimes:png,jpg,jpeg|max:2048',
-            'model_fbx' => 'required|file|max:10240',
+            'envMap_url' => ['required', 'file', new HdrFile()],
+            'model_glb' => 'required|file|mimes:glb',
         ];
     }
 
@@ -40,17 +32,17 @@ class ModelRequest extends FormRequest
         return [
             'title.required' => 'Название обязательно',
             'description.required' => 'Описание обязательно',
-            'price.required' => 'Цена обязательна',
-            'price.min' => 'Цена должна быть больше 0',
             'category_id.required' => 'Категория обязательна',
-            'end_date.required' => 'Дата окончания обязательна',
-            'end_date.after' => 'Дата окончания должна быть в будущем',
             'file.required' => 'Архив модели обязателен',
+            'file.mimes' => 'Архив должен быть в формате .zip или .rar',
+            'file.max' => 'Архив не должен превышать 10 МБ',
             'preview_image_url.required' => 'Превью изображения обязательно',
-            'texture_url.required' => 'Текстура модели обязательна',
-            'model_fbx.required' => 'FBX-модель обязательна',
+            'preview_image_url.mimes' => 'Превью должно быть в формате .png, .jpg или .jpeg',
+            'preview_image_url.max' => 'Превью не должно превышать 2 МБ',
+            'envMap_url.required' => 'Окружение обязательно',
+            'envMap_url.mimes' => 'Окружение должно быть в формате .hdr',
+            'envMap_url.max' => 'Окружение не должно превышать 2 МБ',
+            'model_glb.required' => 'Модель обязательна',
         ];
     }
-
-
 }

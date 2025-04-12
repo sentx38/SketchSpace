@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('favorites', function (Blueprint $table) {
-            $table->id(); // Автоинкрементный ID
+            $table->id()->primary();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('model_id')->constrained('sketch_models')->onDelete('cascade');
             $table->unique(['user_id', 'model_id']); // Уникальность для пары пользователь-модель

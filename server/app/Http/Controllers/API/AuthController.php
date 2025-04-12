@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -11,25 +12,46 @@ use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
-	public function register(RegisterRequest $request)
-	{
-		$payload = $request->validated();
+    public function register(RegisterRequest $request)
+    {
+        $payload = $request->validated();
 
-		try {
-			$payload["password"] = Hash::make($payload["password"]);
-			User::create($payload);
-			return response()->json([
-				"message"=> "Учетная запись зарегестрирована успешно",
-			], 200);
-		}
-		catch (\Exception $err) {
-			Log::info("Ошибка регистрации =>".$err->getMessage());
-			return response()->json([
-                "status"=> 500,
-				"message"=> "Что-то пошло не так. Пожалуйста попробуйте заново позже",
-			], 500);
-		}
-	}
+        try {
+            $payload["password"] = Hash::make($payload["password"]);
+
+            $userRole = Role::where('title', 'user')->firstOrFail();
+            $payload["role_id"] = $userRole->id;
+
+            // Находим минимальный свободный id
+            $existingIds = User::pluck('id')->toArray();
+            sort($existingIds);
+            $newId = 1;
+            foreach ($existingIds as $id) {
+                if ($id == $newId) {
+                    $newId++;
+                } else {
+                    break;
+                }
+            }
+
+            // Создаем пользователя с новым id
+            $user = new User($payload);
+            $user->id = $newId;
+            $user->save();
+
+            return response()->json([
+                "message" => "Учетная запись зарегистрирована успешно",
+            ], 200);
+        } catch (\Exception $err) {
+            Log::info("Ошибка регистрации =>" . $err->getMessage());
+            return response()->json([
+                "status" => 500,
+                "message" => "Что-то пошло не так. Пожалуйста попробуйте заново позже",
+            ], 500);
+        }
+    }
+
+
 	public function login(Request $request)
 	{
 		$payload = $request->validate([
@@ -48,8 +70,13 @@ class AuthController extends Controller
                         "message" => "Неверное имя пользователя или пароль. Проверьте правильность введенных данных"]);
 				}
 
+                $role = $user->role()->first();
 				$token = $user->createToken("web")->plainTextToken;
-				$authRes = array_merge($user->toArray(), ["token" => $token]);
+				$authRes = array_merge($user->toArray(),
+                    [
+                        "token" => $token,
+                        "role" => $role?->title ?? 'user'
+                    ]);
 				return response()->json([
                     "status" => 200,
 					"message" => "Успешно выполнен вход в систему",

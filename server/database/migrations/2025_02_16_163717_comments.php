@@ -9,10 +9,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->id(); // Автоинкрементный ID
+            $table->id()->primary();
             $table->foreignId('model_id')->constrained('sketch_models')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->text('content');
+            $table->text('comment');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

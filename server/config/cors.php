@@ -15,12 +15,21 @@ return [
     |
     */
 
-    'paths' => ['api/*'],
+    'paths' => ['/api/*', '/get/*'],
+
     'allowed_methods' => ['*'],
-    'allowed_origins' => ['http://localhost:3000'], // Укажите домен вашего Next.js приложения
+
+    'allowed_origins' => ['http://localhost:3000'],
+
+    'allowed_origins_patterns' => [],
+
     'allowed_headers' => ['*'],
+
     'exposed_headers' => [],
+
     'max_age' => 0,
-    'supports_credentials' => true,
+
+    'supports_credentials' => false,
+
 
 ];

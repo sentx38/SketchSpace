@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->id(); // Автоинкрементный ID
+            $table->id()->primary();
             $table->string('title'); // Название категории
             $table->string('code')->unique(); // Уникальный код категории
             $table->timestamp('created_at')->useCurrent();
