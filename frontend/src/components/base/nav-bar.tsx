@@ -11,13 +11,13 @@ import {
 } from "@/components/ui/navigation-menu";
 import {cn} from "@/lib/utils";
 import SearchInput from "@/components/base/search-input";
-import ProfileMenu from "@/components/base/profile-menu";
 import Link from "next/link";
 import AddModel from "@/components/model/AddModel";
 import {fetchCategories} from "@/dateFetch/categoryFetch";
 import {useSession} from "next-auth/react";
 import {CustomUser} from "@/app/api/auth/[...nextauth]/authOptions";
 import {Separator} from "@/components/ui/separator";
+import Profile from "@/components/base/profile";
 
 export default function NavBar() {
     const [categories, setCategories] = useState<CategoriesType[]>([]);
@@ -60,7 +60,7 @@ export default function NavBar() {
                 <SearchInput/>
                 <div className="flex justify-between space-x-5 items-center">
                     <AddModel />
-                    <ProfileMenu/>
+                    <Profile />
                 </div>
 
             </nav>

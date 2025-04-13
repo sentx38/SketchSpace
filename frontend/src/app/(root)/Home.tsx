@@ -1,7 +1,6 @@
 import React from "react";
 import Spline from '@splinetool/react-spline/next';
 import Link from "next/link";
-import Profile from "@/components/base/profile";
 
 export default async function Home() {
 
@@ -12,7 +11,6 @@ export default async function Home() {
                     вдохновляйте!</h1>
                     <Link href="/categories/all" className="border-2 pl-10 pr-10 p-3 shadow-[0px_0px_120px_0px_rgba(0,0,0,0.3)] border-emerald-500 rounded-bl-2xl rounded-tr-2xl text-primary underline-offset-4 transition-shadow duration-700 hover:shadow-emerald-400">За
                         покупками</Link>
-                <Profile />
 
                 <p className="text-xl">Добро пожаловать в наш интернет-магазин — уникальную платформу для размещения,
                     просмотра и совместного использования 3D-моделей в реальном времени</p>

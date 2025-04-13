@@ -1,41 +1,17 @@
 "use client";
 
 import * as React from "react";
-import { useEffect, useState } from "react";
-import {
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    ChevronsLeftIcon,
-    ChevronsRightIcon,
-    TrashIcon,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
-import { Skeleton } from "@/components/ui/skeleton";
-import {
-    flexRender,
-    getCoreRowModel,
-    getPaginationRowModel,
-    useReactTable,
-} from "@tanstack/react-table";
+import {useEffect, useState} from "react";
+import {ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon, TrashIcon,} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {Label} from "@/components/ui/label";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table";
+import {Skeleton} from "@/components/ui/skeleton";
+import {flexRender, getCoreRowModel, getPaginationRowModel, useReactTable,} from "@tanstack/react-table";
 import myAxios from "@/lib/axios.config";
-import { useSession } from "next-auth/react";
-import { CustomUser } from "@/app/api/auth/[...nextauth]/authOptions";
+import {useSession} from "next-auth/react";
+import {CustomUser} from "@/app/api/auth/[...nextauth]/authOptions";
 import {toast} from "sonner";
 
 // Типы данных
@@ -57,10 +33,10 @@ export function UserModelTable() {
     const [models, setModels] = useState<ModelType[]>([]);
     const [loadingModels, setLoadingModels] = useState(true);
     const [errorModels, setErrorModels] = useState<string | null>(null);
-    const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+    const [pagination, setPagination] = useState({pageIndex: 0, pageSize: 10});
 
     // Получение текущего пользователя
-    const { data: session, status } = useSession();
+    const {data: session, status} = useSession();
     const user: CustomUser | undefined = session?.user as CustomUser;
 
     // Загрузка моделей пользователя
@@ -95,10 +71,10 @@ export function UserModelTable() {
     }, [status, user?.token, user?.id]);
 
     // Скелетон для загрузки
-    const loadingSkeleton = Array.from({ length: 5 }).map((_, index) => (
+    const loadingSkeleton = Array.from({length: 5}).map((_, index) => (
         <TableRow key={index}>
             <TableCell colSpan={4} className="text-center">
-                <Skeleton className="h-[50px] w-full rounded-sm" />
+                <Skeleton className="h-[50px] w-full rounded-sm"/>
             </TableCell>
         </TableRow>
     ));
@@ -110,22 +86,22 @@ export function UserModelTable() {
             {
                 accessorKey: "id",
                 header: "ID",
-                cell: ({ row }) => row.original.id || "-",
+                cell: ({row}) => row.original.id || "-",
             },
             {
                 accessorKey: "title",
                 header: "Название",
-                cell: ({ row }) => row.original.title || "Без названия",
+                cell: ({row}) => row.original.title || "Без названия",
             },
             {
                 accessorKey: "favorite_count",
                 header: "Лайки",
-                cell: ({ row }) => row.original.favorite_count ?? 0,
+                cell: ({row}) => row.original.favorite_count ?? 0,
             },
             {
                 accessorKey: "action",
                 header: "Действие",
-                cell: ({ row }) => (
+                cell: ({row}) => (
                     <div className="flex justify-center">
                         {row.original.author_id === user?.id && (
                             <Button
@@ -150,20 +126,20 @@ export function UserModelTable() {
                                         .catch((err: any) => {
                                             console.error("Ошибка удаления модели:", err);
                                             toast.error(err.response?.status === 403
-                                                        ? "У вас нет прав для удаления этой модели."
-                                                        : "Не удалось удалить модель. Попробуйте снова.",);
+                                                ? "У вас нет прав для удаления этой модели."
+                                                : "Не удалось удалить модель. Попробуйте снова.",);
                                         });
                                 }}
                                 title="Удалить модель"
                             >
-                                <TrashIcon className="h-4 w-4" />
+                                <TrashIcon className="h-4 w-4"/>
                             </Button>
                         )}
                     </div>
                 ),
             },
         ],
-        state: { pagination },
+        state: {pagination},
         onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
@@ -178,7 +154,9 @@ export function UserModelTable() {
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
-                                    <TableHead key={header.id}>
+                                    <TableHead
+                                        key={header.id}
+                                        className={header.column.id === "action" ? "text-center" : ""}>
                                         {flexRender(header.column.columnDef.header, header.getContext())}
                                     </TableHead>
                                 ))}
@@ -215,13 +193,13 @@ export function UserModelTable() {
                 </Table>
             </div>
             {/* Пагинация */}
-            {!loadingModels && !errorModels && <PaginationControls table={table} />}
+            {!loadingModels && !errorModels && <PaginationControls table={table}/>}
         </div>
     );
 }
 
 // Компонент пагинации
-function PaginationControls({ table }: { table: any }) {
+function PaginationControls({table}: { table: any }) {
     return (
         <div className="flex items-center justify-between px-4">
             <div className="flex w-full items-center gap-8 lg:w-fit">
@@ -234,7 +212,7 @@ function PaginationControls({ table }: { table: any }) {
                         onValueChange={(value) => table.setPageSize(Number(value))}
                     >
                         <SelectTrigger className="w-20" id="rows-per-page">
-                            <SelectValue placeholder={table.getState().pagination.pageSize} />
+                            <SelectValue placeholder={table.getState().pagination.pageSize}/>
                         </SelectTrigger>
                         <SelectContent side="top">
                             {[10, 20, 30, 40, 50].map((pageSize) => (
@@ -256,7 +234,7 @@ function PaginationControls({ table }: { table: any }) {
                         disabled={!table.getCanPreviousPage()}
                     >
                         <span className="sr-only">Перейти на первую страницу</span>
-                        <ChevronsLeftIcon />
+                        <ChevronsLeftIcon/>
                     </Button>
                     <Button
                         variant="outline"
@@ -266,7 +244,7 @@ function PaginationControls({ table }: { table: any }) {
                         disabled={!table.getCanPreviousPage()}
                     >
                         <span className="sr-only">Перейти на предыдущую страницу</span>
-                        <ChevronLeftIcon />
+                        <ChevronLeftIcon/>
                     </Button>
                     <Button
                         variant="outline"
@@ -276,7 +254,7 @@ function PaginationControls({ table }: { table: any }) {
                         disabled={!table.getCanNextPage()}
                     >
                         <span className="sr-only">Перейти на следующую страницу</span>
-                        <ChevronRightIcon />
+                        <ChevronRightIcon/>
                     </Button>
                     <Button
                         variant="outline"
@@ -286,7 +264,7 @@ function PaginationControls({ table }: { table: any }) {
                         disabled={!table.getCanNextPage()}
                     >
                         <span className="sr-only">Перейти на последнюю страницу</span>
-                        <ChevronsRightIcon />
+                        <ChevronsRightIcon/>
                     </Button>
                 </div>
             </div>

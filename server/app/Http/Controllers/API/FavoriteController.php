@@ -8,6 +8,7 @@ use App\Models\Favorite;
 use App\Models\SketchModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class FavoriteController extends Controller
 {
@@ -16,12 +17,36 @@ class FavoriteController extends Controller
      */
     public function index()
     {
-        // Получение всех избранных моделей для текущего пользователя
-        $favorites = Favorite::where('user_id', Auth::id())
-            ->with('model') // Подгружаем связанные модели
-            ->get();
+        try {
+            // Получение всех избранных моделей для текущего пользователя
+            $favorites = Favorite::where('user_id', Auth::id())
+                ->with(['model' => function ($query) {
+                    $query->select('id', 'title', 'author_id')
+                        ->with(['author' => function ($query) {
+                            $query->select('id', 'username');
+                        }]);
+                }])
+                ->get();
 
-        return response()->json($favorites);
+            // Преобразуем данные в ожидаемый формат
+            $formattedFavorites = $favorites->map(function ($favorite) {
+                return [
+                    'id' => $favorite->model->id,
+                    'title' => $favorite->model->title,
+                    'author_id' => $favorite->model->author_id,
+                    'author' => $favorite->model->author ? [
+                        'username' => $favorite->model->author->username,
+                    ] : null,
+                ];
+            });
+
+            return response()->json([
+                'data' => $formattedFavorites,
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error("favorites-error => " . $e->getMessage());
+            return response()->json(['message' => 'Ошибка при загрузке избранных моделей.'], 500);
+        }
     }
 
     /**
@@ -72,6 +97,9 @@ class FavoriteController extends Controller
         return response()->json(['message' => 'Model added to favorites', 'favorite' => $favorite], 201);
     }
 
+    /**
+     * Check if a model is favorited by the user.
+     */
     public function checkFavoriteStatus($modelId)
     {
         $model = SketchModel::find($modelId);

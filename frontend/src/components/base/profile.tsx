@@ -1,12 +1,7 @@
+// profile.tsx
 "use client";
 
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
+import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,} from "@/components/ui/dialog";
 import {
     Sidebar,
     SidebarContent,
@@ -24,47 +19,47 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuPortal,
     DropdownMenuSeparator,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Calendar, Home, Inbox, LogOutIcon, MoreVerticalIcon } from "lucide-react";
-import { useSession } from "next-auth/react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useTheme } from "next-themes";
-import { UserModelTable } from "@/components/base/user-model-table";
-import React, { useState } from "react";
+import {Castle, FolderHeart, LogOutIcon, MoreVerticalIcon, User2} from "lucide-react";
+import {signOut, useSession} from "next-auth/react";
+import {useTheme} from "next-themes";
+import {UserModelTable} from "@/components/base/user-model-table";
+import React, {useState} from "react";
+import {UserFavorites} from "@/components/base/user-favorites";
+import UserInfo from "@/components/base/user-info";
+import {CustomUser} from "@/app/api/auth/[...nextauth]/authOptions";
+import UserAvatar from "@/components/common/UserAvatar";
+import myAxios from "@/lib/axios.config";
+import {LOGOUT_URL} from "@/lib/apiEndPoints";
+import {toast} from "sonner";
+import {redirect} from "next/navigation";
 
 // Пункты меню
 const items = [
     {
         title: "Мои модели",
         key: "models",
-        icon: Home,
+        icon: Castle,
     },
     {
         title: "Избранное",
         key: "favorites",
-        icon: Inbox,
+        icon: FolderHeart,
     },
     {
         title: "Профиль",
         key: "profile",
-        icon: Calendar,
+        icon: User2,
     },
 ];
 
 export default function Profile() {
-    const { setTheme } = useTheme();
-    const { data } = useSession();
-    const user = data?.user as {
-        name: string;
-        email: string;
-        profile_image?: string;
-    };
+    const [open, setOpen] = useState(false);
+    const {setTheme} = useTheme();
+    const {data} = useSession();
+    const user = data?.user as CustomUser;
 
     // Состояние для активного вида внутри диалога
     const [activeView, setActiveView] = useState("models");
@@ -73,26 +68,52 @@ export default function Profile() {
     const renderContent = () => {
         switch (activeView) {
             case "models":
-                return <UserModelTable />;
+                return <UserModelTable/>;
             case "favorites":
-                return <div>Здесь будут отображаться избранные элементы</div>;
+                return <UserFavorites/>;
             case "profile":
-                return (
-                    <div>
-                        <h2 className="text-lg font-medium">Профиль</h2>
-                        <p>Имя: {user?.name}</p>
-                        <p>Email: {user?.email}</p>
-                    </div>
-                );
+                return <UserInfo/>;
             default:
                 return null;
         }
     };
 
+    const handleLogout = async () => {
+        try {
+            await myAxios.post(
+                LOGOUT_URL,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${user.token}`,
+                    },
+                }
+            );
+            signOut({
+                callbackUrl: "/auth",
+                redirect: true,
+            });
+        } catch {
+            toast.error("Ошибка при выходе. Попробуйте снова!");
+        }
+    };
+
     return (
         <div>
-            <Dialog>
-                <DialogTrigger>Открыть профиль</DialogTrigger>
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogTrigger>
+                    <div onClick={(e) => {
+                        e.preventDefault()
+                        if (!user) {
+                            toast.info("Пожалуйста, войдите в аккаунт, чтобы загрузить модель")
+                            redirect("/auth")
+                        } else {
+                            setOpen(true)
+                        }
+                    }}>
+                        <UserAvatar image={user?.profile_image ?? undefined}/>
+                    </div>
+                </DialogTrigger>
                 <DialogContent className="max-w-[75vw] h-[75vh] p-0 overflow-hidden">
                     <SidebarProvider>
                         <div className="flex h-full w-full">
@@ -109,7 +130,7 @@ export default function Profile() {
                                                             onClick={() => setActiveView(item.key)}
                                                             className={activeView === item.key ? "bg-muted text-foreground" : ""}
                                                         >
-                                                            <item.icon />
+                                                            <item.icon/>
                                                             <span>{item.title}</span>
                                                         </SidebarMenuButton>
                                                     </SidebarMenuItem>
@@ -125,55 +146,48 @@ export default function Profile() {
                                                 <DropdownMenu>
                                                     <DropdownMenuTrigger asChild>
                                                         <SidebarMenuButton size="lg">
-                                                            <Avatar className="h-8 w-8 rounded-lg grayscale">
-                                                                <AvatarImage src={user.profile_image} alt={user.name} />
-                                                                <AvatarFallback className="rounded-lg">U</AvatarFallback>
-                                                            </Avatar>
-                                                            <div className="grid flex-1 text-left text-sm leading-tight">
-                                                                <span className="truncate font-medium">{user.name}</span>
-                                                                <span className="truncate text-xs text-muted-foreground">
-                                  {user.email}
-                                </span>
+                                                            <UserAvatar image={user?.profile_image ?? undefined}/>
+                                                            <div
+                                                                className="grid flex-1 text-left text-sm leading-tight">
+                                                                <span
+                                                                    className="truncate font-medium">{user.name}</span>
+                                                                <span
+                                                                    className="truncate text-xs text-muted-foreground">{user.email}</span>
                                                             </div>
-                                                            <MoreVerticalIcon className="ml-auto size-4" />
+                                                            <MoreVerticalIcon className="ml-auto size-4"/>
                                                         </SidebarMenuButton>
                                                     </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="center" sideOffset={8} className="min-w-56 rounded-lg">
+                                                    <DropdownMenuContent align="center" sideOffset={8}
+                                                                         className="min-w-56 rounded-lg">
                                                         <DropdownMenuLabel className="p-0 font-normal">
-                                                            <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                                                                <Avatar className="h-8 w-8 rounded-lg">
-                                                                    <AvatarImage src={user.profile_image} alt={user.name} />
-                                                                    <AvatarFallback className="rounded-lg">U</AvatarFallback>
-                                                                </Avatar>
-                                                                <div className="grid flex-1 text-left text-sm leading-tight">
-                                                                    <span className="truncate font-medium">{user.name}</span>
-                                                                    <span className="truncate text-xs text-muted-foreground">
-                                    {user.email}
-                                  </span>
+                                                            <div
+                                                                className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                                                                <UserAvatar image={user?.profile_image ?? undefined}/>
+                                                                <div
+                                                                    className="grid flex-1 text-left text-sm leading-tight">
+                                                                    <span
+                                                                        className="truncate font-medium">{user.name}</span>
+                                                                    <span
+                                                                        className="truncate text-xs text-muted-foreground">{user.email}</span>
                                                                 </div>
                                                             </div>
                                                         </DropdownMenuLabel>
-                                                        <DropdownMenuSeparator />
-                                                        <DropdownMenuSub>
-                                                            <DropdownMenuSubTrigger>Тема</DropdownMenuSubTrigger>
-                                                            <DropdownMenuPortal>
-                                                                <DropdownMenuSubContent>
-                                                                    <DropdownMenuItem onClick={() => setTheme("light")}>
-                                                                        Светлая
-                                                                    </DropdownMenuItem>
-                                                                    <DropdownMenuItem onClick={() => setTheme("dark")}>
-                                                                        Темная
-                                                                    </DropdownMenuItem>
-                                                                    <DropdownMenuSeparator />
-                                                                    <DropdownMenuItem onClick={() => setTheme("system")}>
-                                                                        Системная
-                                                                    </DropdownMenuItem>
-                                                                </DropdownMenuSubContent>
-                                                            </DropdownMenuPortal>
-                                                        </DropdownMenuSub>
-                                                        <DropdownMenuSeparator />
-                                                        <DropdownMenuItem>
-                                                            <LogOutIcon className="mr-2 h-4 w-4" />
+                                                        <DropdownMenuSeparator/>
+                                                        <DropdownMenuLabel className="text-muted-foreground">Тема</DropdownMenuLabel>
+                                                        <DropdownMenuSeparator/>
+                                                        <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme("light")}>
+                                                            Светлая
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme("dark")}>
+                                                            Темная
+                                                        </DropdownMenuItem>
+
+                                                        <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme("system")}>
+                                                            Системная
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuSeparator/>
+                                                        <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
+                                                            <LogOutIcon className="mr-2 h-4 w-4"/>
                                                             Выйти
                                                         </DropdownMenuItem>
                                                     </DropdownMenuContent>
@@ -184,14 +198,11 @@ export default function Profile() {
                                 )}
                             </Sidebar>
 
-                            {/* Контентная область */}
                             <div className="flex-1 h-full flex flex-col">
                                 <DialogHeader className="px-5 pt-5 pb-2 shrink-0">
                                     <DialogTitle>{items.find((item) => item.key === activeView)?.title}</DialogTitle>
                                 </DialogHeader>
-                                <div className="flex-1 px-5 pb-5 overflow-auto">
-                                    {renderContent()}
-                                </div>
+                                <div className="flex-1 px-5 pb-5 overflow-auto">{renderContent()}</div>
                             </div>
                         </div>
                     </SidebarProvider>

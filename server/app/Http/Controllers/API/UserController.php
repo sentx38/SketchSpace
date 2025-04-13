@@ -18,18 +18,37 @@ class UserController extends Controller
     public function updateProfileImage(Request $request)
     {
         $payload = $request->validate([
-            "profile_image" => "required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048"
+            "profile_image" => "nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048",
+            "name" => "nullable|string|max:255",
+            "email" => "nullable|email|max:255|unique:users,email," . $request->user()->id,
         ]);
 
         try {
             $user = $request->user();
-            $filename = $payload["profile_image"]->store("user_".$user->id."/profile/images");
-            User::where("id", $user->id)->update(["profile_image" => $filename]);
+            $updates = [];
+
+            if (isset($payload["profile_image"])) {
+                $filename = $payload["profile_image"]->store("user_".$user->id."/profile/images");
+                $updates["profile_image"] = $filename;
+            }
+            if (isset($payload["name"])) {
+                $updates["name"] = $payload["name"];
+            }
+            if (isset($payload["email"])) {
+                $updates["email"] = $payload["email"];
+            }
+
+            if (!empty($updates)) {
+                User::where("id", $user->id)->update($updates);
+            }
+
             return response()->json([
-                "image" => $filename,
+                "image" => $updates["profile_image"] ?? $user->profile_image,
+                "name" => $updates["name"] ?? $user->name,
+                "email" => $updates["email"] ?? $user->email,
             ]);
         } catch (\Exception $err) {
-            Log::info("Ошибка изображения профиля =>" . $err->getMessage());
+            Log::info("Ошибка обновления профиля =>" . $err->getMessage());
             return response()->json([
                 "message" => "Что-то пошло не так. Пожалуйста попробуйте заново позже"
             ], 500);

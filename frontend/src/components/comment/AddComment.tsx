@@ -92,7 +92,7 @@ export default function AddComment({ model }: { model: ModelType }) {
                         <p className="text-muted-foreground text-sm">Поделитесь своими мыслями</p>
                     </div>
                     {user ? (
-                        <Button variant="outline">Post</Button>
+                        <Button variant="outline">Написать</Button>
                     ) : (
                         <Link href="/auth">
                             <Button variant="outline">Войти</Button>

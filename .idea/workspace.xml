@@ -5,37 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="981f425d-1f07-47b6-a1c3-4a49abda075a" name="Changes" comment="30/03/2025 - Добавлены функции добавления моделей в режиме реального времени а также функция копирования (будет редактироваться).&#10;Для Запуска&#10;1. bun run dev&#10;2. php artisan serve&#10;3. php artisan queue:listen&#10;4. php artisan reverb:start">
-      <change afterPath="$PROJECT_DIR$/server/app/Events/CategoryBroadcastEvent.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/app/Events/ModelFavoriteCountEvent.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/app/Events/UserBroadcastEvent.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/app/Http/Controllers/API/CommentController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/app/Http/Controllers/API/FavoriteController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/app/Models/Comment.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/app/Models/Favorite.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/app/Models/Role.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/app/Rules/HdrFile.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/database/migrations/2025_04_05_232340_create_roles_table.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/database/seeders/RoleSeeder.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/API/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/API/AuthController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/API/CategoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/API/CategoryController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/API/ModelController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/API/ModelController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/API/FavoriteController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/API/FavoriteController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/API/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/API/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Http/Requests/ModelRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Requests/ModelRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Models/SketchModel.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Models/SketchModel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/config/cors.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database/migrations/0001_01_01_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/migrations/0001_01_01_000000_create_users_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database/migrations/2025_01_19_112903_create_personal_access_tokens_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/migrations/2025_01_19_112903_create_personal_access_tokens_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163525_categories.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163525_categories.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163651_models.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163651_models.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163717_comments.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163717_comments.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163741_favorites.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/migrations/2025_02_16_163741_favorites.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database/migrations/2025_03_23_162846_create_jobs_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/migrations/2025_03_23_162846_create_jobs_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/seeders/DatabaseSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/public/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/server/public/.htaccess" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,8 +21,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -451,7 +423,8 @@
       <workItem from="1744098474874" duration="6848000" />
       <workItem from="1744213130629" duration="18565000" />
       <workItem from="1744351407032" duration="18794000" />
-      <workItem from="1744448627864" duration="39045000" />
+      <workItem from="1744448627864" duration="39673000" />
+      <workItem from="1744555107702" duration="10235000" />
     </task>
     <task id="LOCAL-00001" summary="30/03/2025 - Добавлены функции добавления моделей в режиме реального времени а также функция копирования (будет редактироваться).&#10;Для Запуска&#10;1. bun run dev&#10;2. php artisan serve&#10;3. php artisan queue:listen&#10;4. php artisan reverb:start">
       <option name="closed" value="true" />
