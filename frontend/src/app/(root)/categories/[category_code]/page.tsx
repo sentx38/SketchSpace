@@ -45,7 +45,7 @@ export default function CategoryPage() {
     return (
         <div className="h-screen p-5">
             {loading ? (
-                <div className="flex flex-wrap gap-[25px]">
+                <div className="grid grid-cols-[repeat(auto-fill,330px)] gap-[25px] justify-between">
                     {Array.from({ length: 21 }).map((_, index) => (
                         <Skeleton key={index} className="w-[330px] h-[440px] rounded-xl" />
                     ))}

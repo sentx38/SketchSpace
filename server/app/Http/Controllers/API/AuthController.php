@@ -93,6 +93,7 @@ class AuthController extends Controller
 				"message"=> "Что-то пошло не так. Пожалуйста попробуйте заново позже"], 500);
 		}
 	}
+
     public function checkCredentials(Request $request)
     {
         $payload = $request->validate([
@@ -127,6 +128,7 @@ class AuthController extends Controller
                 "message"=> "Что-то пошло не так. Пожалуйста попробуйте заново позже"], 500);
         }
     }
+
     public function logout(Request $request){
         try {
             $request->user()->currentAccessToken()->delete();

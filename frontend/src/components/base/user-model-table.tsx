@@ -55,10 +55,12 @@ export function UserModelTable() {
                         Authorization: `Bearer ${user.token}`,
                     },
                     params: {
-                        author_id: user.id, // Фильтрация по ID пользователя
+                        author_id: user.id,
                     },
                 });
-                setModels(response.data.data);
+                // Фильтрация моделей по author_id на стороне клиента
+                const userModels = response.data.data.filter(model => model.author_id === user.id);
+                setModels(userModels);
             } catch (err: any) {
                 console.error("Ошибка загрузки моделей:", err);
                 setErrorModels("Не удалось загрузить модели.");
@@ -144,6 +146,8 @@ export function UserModelTable() {
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
     });
+
+    console.log(models)
 
     return (
         <div className="flex flex-col w-full gap-4">

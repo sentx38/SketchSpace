@@ -20,7 +20,7 @@ class ModelRequest extends FormRequest
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'file' => 'required|file|mimes:zip,rar|max:10240',
+            'file' => 'required|file|mimes:zip,rar',
             'preview_image_url' => 'required|file|mimes:png,jpg,jpeg|max:2048',
             'envMap_url' => ['required', 'file', new HdrFile()],
             'model_glb' => 'required|file|mimes:glb',
@@ -35,13 +35,11 @@ class ModelRequest extends FormRequest
             'category_id.required' => 'Категория обязательна',
             'file.required' => 'Архив модели обязателен',
             'file.mimes' => 'Архив должен быть в формате .zip или .rar',
-            'file.max' => 'Архив не должен превышать 10 МБ',
             'preview_image_url.required' => 'Превью изображения обязательно',
             'preview_image_url.mimes' => 'Превью должно быть в формате .png, .jpg или .jpeg',
             'preview_image_url.max' => 'Превью не должно превышать 2 МБ',
             'envMap_url.required' => 'Окружение обязательно',
             'envMap_url.mimes' => 'Окружение должно быть в формате .hdr',
-            'envMap_url.max' => 'Окружение не должно превышать 2 МБ',
             'model_glb.required' => 'Модель обязательна',
         ];
     }

@@ -12,7 +12,7 @@ export default async function Home() {
                     <Link href="/categories/all" className="border-2 pl-10 pr-10 p-3 shadow-[0px_0px_120px_0px_rgba(0,0,0,0.3)] border-emerald-500 rounded-bl-2xl rounded-tr-2xl text-primary underline-offset-4 transition-shadow duration-700 hover:shadow-emerald-400">За
                         покупками</Link>
 
-                <p className="text-xl">Добро пожаловать в наш интернет-магазин — уникальную платформу для размещения,
+                <p className="text-xl">Добро пожаловать на наш сайт — уникальную платформу для размещения,
                     просмотра и совместного использования 3D-моделей в реальном времени</p>
             </div>
             <div className="relative md:w-[1000px] md:h-screen object-contain">

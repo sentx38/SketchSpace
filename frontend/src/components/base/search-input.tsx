@@ -6,14 +6,11 @@ import { useRouter } from "next/navigation";
 
 export default function SearchInput() {
     const [query, setQuery] = useState("");
-    const [isSearching, setIsSearching] = useState(false);
     const router = useRouter();
 
     const handleSearch = () => {
         if (query) {
-            setIsSearching(true);
-            router.push(`/search/${encodeURIComponent(query)}`);
-
+                router.push(`/search/${encodeURIComponent(query)}`);
         }
     };
 
@@ -27,7 +24,6 @@ export default function SearchInput() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                disabled={isSearching}
             />
         </div>
     );

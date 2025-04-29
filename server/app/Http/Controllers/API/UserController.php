@@ -204,7 +204,7 @@ class UserController extends Controller
                 return response()->json(['message' => 'Нельзя удалить самого себя'], 400);
             }
 
-            // 👇 Удаление директории "user_{id}" из storage
+            // Удаление директории "user_{id}" из storage
             $folderPath = "user_{$user->id}";
             if (Storage::exists($folderPath)) {
                 Storage::deleteDirectory($folderPath);

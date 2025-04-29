@@ -6,7 +6,8 @@ type UseModelBroadcastProps = {
 };
 
 interface ModelBroadCastEvent {
-    model: ModelType;
+    model: ModelType | { id: number };
+    action: "create" | "delete";
 }
 
 interface ModelFavoriteCountEvent {
@@ -20,8 +21,15 @@ export const useModelBroadcast = ({ setModels }: UseModelBroadcastProps) => {
         laraEcho
             .channel("model-broadcast")
             .listen("ModelBroadCastEvent", (event: ModelBroadCastEvent) => {
-                const model = event.model;
-                setModels((prevModels) => [model, ...prevModels]);
+                if (event.action === "create") {
+                    // Добавляем новую модель в начало списка
+                    setModels((prevModels) => [event.model as ModelType, ...prevModels]);
+                } else if (event.action === "delete") {
+                    // Удаляем модель из списка
+                    setModels((prevModels) =>
+                        prevModels.filter((model) => model.id !== event.model.id)
+                    );
+                }
             })
             .listen("ModelFavoriteCountEvent", (event: ModelFavoriteCountEvent) => {
                 setModels((models) =>

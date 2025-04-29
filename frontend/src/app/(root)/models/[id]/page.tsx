@@ -89,8 +89,6 @@ export default function ModelPage({ params }: { params: { id: string } }) {
 
         setDownloadLoading(true);
         try {
-            console.log("User token:", user.token); // Для отладки
-            console.log("Downloading from:", model.file_url); // Для отладки
 
             // Извлекаем расширение файла из file_url
             const extensionMatch = model.file_url.match(/\.([a-zA-Z0-9]+)$/);
@@ -114,7 +112,7 @@ export default function ModelPage({ params }: { params: { id: string } }) {
             link.remove();
             window.URL.revokeObjectURL(url);
 
-            toast.success("Файл успешно скачан!");
+            // toast.success("Файл успешно скачан!");
         } catch (error: any) {
             console.error("Ошибка при скачивании архива:", error);
             console.error("Response:", error.response);

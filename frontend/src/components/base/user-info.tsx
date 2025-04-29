@@ -1,4 +1,3 @@
-// user-info.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -10,19 +9,21 @@ import { toast } from "sonner";
 import myAxios from "@/lib/axios.config";
 import { UPDATE_PROFILE_URL } from "@/lib/apiEndPoints";
 import UserAvatar from "@/components/common/UserAvatar";
-import {CustomUser} from "@/app/api/auth/[...nextauth]/authOptions";
+import { CustomUser } from "@/app/api/auth/[...nextauth]/authOptions";
 
+interface UserInfoProps {
+    onUpdate?: (updatedUser: Partial<CustomUser>) => void;
+}
 
-
-export default function UserInfo() {
+export default function UserInfo({ onUpdate }: UserInfoProps) {
     const { data, update } = useSession();
     const user = data?.user as CustomUser | undefined;
 
-    // Отдельные состояния для name и email
     const [isEditing, setIsEditing] = useState(false);
     const [name, setName] = useState<string>(user?.name ?? "");
     const [email, setEmail] = useState<string>(user?.email ?? "");
     const [image, setImage] = useState<File | null>(null);
+    const [displayImage, setDisplayImage] = useState<string | undefined>(user?.profile_image);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState<{
         name: string[];
@@ -34,7 +35,6 @@ export default function UserInfo() {
         profile_image: [],
     });
 
-    // Проверка, если пользователь ещё не загружен
     if (!user) {
         return <div>Загрузка...</div>;
     }
@@ -43,6 +43,7 @@ export default function UserInfo() {
         const file = event.target.files?.[0];
         if (file) {
             setImage(file);
+            setDisplayImage(URL.createObjectURL(file));
         }
     };
 
@@ -83,18 +84,36 @@ export default function UserInfo() {
 
             const responseData = response.data;
 
+            const updatedName = name && name !== user.name ? name : user.name ?? "";
+            const updatedEmail = email && email !== user.email ? email : user.email ?? "";
+            const updatedImage = responseData.image || user.profile_image;
+
+            // Обновляем локальное состояние
+            setName(updatedName);
+            setEmail(updatedEmail);
+            setDisplayImage(updatedImage);
+            setImage(null);
+
+            // Обновляем сессию
             await update({
                 user: {
-                    name: name && name !== user.name ? name : user.name ?? "",
-                    email: email && email !== user.email ? email : user.email ?? "",
-                    profile_image: responseData.image || user.profile_image,
+                    name: updatedName,
+                    email: updatedEmail,
+                    profile_image: updatedImage,
                 },
+            });
+
+            // Уведомляем родительский компонент
+            onUpdate?.({
+                name: updatedName,
+                email: updatedEmail,
+                profile_image: updatedImage,
             });
 
             toast.success("Профиль успешно обновлен!");
             setIsEditing(false);
-            setImage(null);
         } catch (err: any) {
+            setLoading(false);
             if (err.response?.status === 422) {
                 setErrors(err.response?.data.errors || { name: [], email: [], profile_image: [] });
             } else {
@@ -114,6 +133,7 @@ export default function UserInfo() {
                             <Label htmlFor="name">Имя</Label>
                             <Input
                                 id="name"
+                                value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="Введите имя"
                             />
@@ -126,6 +146,7 @@ export default function UserInfo() {
                             <Input
                                 id="email"
                                 type="email"
+                                value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="Введите email"
                             />
@@ -156,6 +177,7 @@ export default function UserInfo() {
                                     setName(user.name ?? "");
                                     setEmail(user.email ?? "");
                                     setImage(null);
+                                    setDisplayImage(user.profile_image);
                                     setErrors({ name: [], email: [], profile_image: [] });
                                 }}
                             >
@@ -166,10 +188,10 @@ export default function UserInfo() {
                 ) : (
                     <div className="space-y-4">
                         <div className="flex items-center space-x-4">
-                            <UserAvatar image={user.profile_image ?? undefined} />
+                            <UserAvatar image={displayImage ?? undefined} />
                             <div>
-                                <p className="font-medium">Имя: {user.name}</p>
-                                <p className="text-muted-foreground">Email: {user.email}</p>
+                                <p className="font-medium">Имя: {name}</p>
+                                <p className="text-muted-foreground">Email: {email}</p>
                             </div>
                         </div>
                         <div className="flex space-x-2">

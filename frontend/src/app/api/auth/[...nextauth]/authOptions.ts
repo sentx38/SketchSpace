@@ -31,11 +31,17 @@ export const authOptions: AuthOptions = {
     },
     callbacks: {
         async jwt({ token, user, trigger, session }) {
-            if (trigger === "update" && session?.profile_image) {
-                const user: CustomUser = token.user as CustomUser;
-                user.profile_image = session?.profile_image;
-                console.log("The token is", token);
-            }
+					if (trigger === "update" && session?.user) {
+						const userData: CustomUser = token.user as CustomUser;
+						// Обновляем все поля, переданные в session.user
+						token.user = {
+								...userData,
+								name: session.user.name ?? userData.name,
+								email: session.user.email ?? userData.email,
+								profile_image: session.user.profile_image ?? userData.profile_image,
+						};
+						console.log("Updated token:", token);
+				}
 
             if (user) {
                 token.user = user;

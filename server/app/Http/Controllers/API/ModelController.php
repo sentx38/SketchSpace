@@ -166,7 +166,7 @@ class ModelController extends Controller
                 $model->load(['author', 'category']);
                 Log::debug("Model with relations after creation:", $model->toArray());
 
-                ModelBroadCastEvent::dispatch($model);
+                ModelBroadCastEvent::dispatch($model, 'create');
 
                 return response()->json([
                     "message" => "Модель успешно создана!",
@@ -226,7 +226,7 @@ class ModelController extends Controller
         $baseUrl = config('app.url'); // Базовый URL из .env
 
         $fileUrls = [
-            'file_url' => Storage::url("$newFolderPath/archive." . pathinfo($model->file_url, PATHINFO_EXTENSION)),
+            'file_url' => "$baseUrl/get/$newFolderPath/archive." . pathinfo($model->file_url, PATHINFO_EXTENSION),
             'preview_image_url' => Storage::url("$newFolderPath/preview." . pathinfo($model->preview_image_url, PATHINFO_EXTENSION)),
             'envMap_url' => "$baseUrl/get/$newFolderPath/envMap." . pathinfo($model->envMap_url, PATHINFO_EXTENSION),
             'model_glb_url' => "$baseUrl/get/$newFolderPath/model." . pathinfo($model->model_glb_url, PATHINFO_EXTENSION),
@@ -289,6 +289,7 @@ class ModelController extends Controller
             $model->delete();
 
             Log::info("Model deleted: ID={$id}, UserID={$user->id}, Role={$user->role}");
+						ModelBroadCastEvent::dispatch($model, 'delete');
 
             return response()->json([
                 "message" => "Модель успешно удалена."

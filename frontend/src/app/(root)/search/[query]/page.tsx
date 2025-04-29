@@ -45,8 +45,8 @@ export default function SearchResults() {
     return (
         <div className="h-screen p-5">
             {loading ? (
-                <div className="flex gap-[25px]">
-                    {Array.from({ length: 7 }).map((_, index) => (
+                <div className="grid grid-cols-[repeat(auto-fill,330px)] gap-[25px] justify-between">
+                    {Array.from({ length: 6 }).map((_, index) => (
                         <Skeleton
                             key={index}
                             className="w-[330px] h-[440px] rounded-xl"

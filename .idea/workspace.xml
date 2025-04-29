@@ -6,8 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="981f425d-1f07-47b6-a1c3-4a49abda075a" name="Changes" comment="30/03/2025 - Добавлены функции добавления моделей в режиме реального времени а также функция копирования (будет редактироваться).&#10;Для Запуска&#10;1. bun run dev&#10;2. php artisan serve&#10;3. php artisan queue:listen&#10;4. php artisan reverb:start">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/API/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/API/AuthController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/API/CommentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/API/CommentController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/API/FavoriteController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/API/FavoriteController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/API/ModelController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/API/ModelController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/app/Http/Controllers/API/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Controllers/API/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app/Http/Requests/ModelRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/app/Http/Requests/ModelRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/database/migrations/0001_01_01_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/database/migrations/0001_01_01_000000_create_users_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -425,6 +431,15 @@
       <workItem from="1744351407032" duration="18794000" />
       <workItem from="1744448627864" duration="39673000" />
       <workItem from="1744555107702" duration="10235000" />
+      <workItem from="1744703140757" duration="1040000" />
+      <workItem from="1744704747378" duration="1179000" />
+      <workItem from="1744706403545" duration="1941000" />
+      <workItem from="1744793612053" duration="1808000" />
+      <workItem from="1744802828008" duration="166000" />
+      <workItem from="1744824797564" duration="4202000" />
+      <workItem from="1744911932809" duration="2254000" />
+      <workItem from="1745311886341" duration="514000" />
+      <workItem from="1745839457291" duration="9745000" />
     </task>
     <task id="LOCAL-00001" summary="30/03/2025 - Добавлены функции добавления моделей в режиме реального времени а также функция копирования (будет редактироваться).&#10;Для Запуска&#10;1. bun run dev&#10;2. php artisan serve&#10;3. php artisan queue:listen&#10;4. php artisan reverb:start">
       <option name="closed" value="true" />

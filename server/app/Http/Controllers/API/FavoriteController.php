@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 class FavoriteController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Вывод моделей в избранном у пользователя
      */
     public function index()
     {
@@ -50,7 +50,7 @@ class FavoriteController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Сохранение модели в избранном
      */
     public function store(Request $request)
     {
@@ -98,7 +98,7 @@ class FavoriteController extends Controller
     }
 
     /**
-     * Check if a model is favorited by the user.
+     * Проверка существует ли модель в избрранном у пользователя
      */
     public function checkFavoriteStatus($modelId)
     {
@@ -115,23 +115,7 @@ class FavoriteController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
+     * Удаление модели из избранного
      */
     public function destroy(string $id)
     {
